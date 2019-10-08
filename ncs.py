@@ -19,6 +19,9 @@ class NCS:
       self.ftarget = parameters.ftarget
       self.popsize = parameters.popsize
       self.Tmax = parameters.tmax
+      self.epoch = parameters.epoch
+      self.r = parameters.r
+      self.lambda_exp = parameters.lambda_
       self.n = np.shape(parameters.init_value)[0]
       self.xl = self.bounds[0]*np.ones([parameters.popsize, self.n])
       self.xu = self.bounds[1]*np.ones([parameters.popsize, self.n])
@@ -45,10 +48,10 @@ class NCS:
         self.sigma = np.ones([self.popsize, self.n]) * self.stepsize
       else:
         self.sigma = np.tile(sigma, (self.popsize, 1))
-      self.r = 0.99
+      # self.r = 0.99
       self.fit = np.array(fitness)
       self.flag = np.zeros([self.popsize, 1])
-      self.epoch = self.popsize
+      # self.epoch = self.popsize
       self.lambda_ = np.ones([self.popsize, 1])
       self.lambda_sigma = 0.1
       self.lambda_range = self.lambda_sigma
@@ -161,7 +164,7 @@ class NCS:
       # normalize correlation values
       normCorr = pMinCorr / (pMinCorr + trialMinCorr)
       normTrialCorr = trialMinCorr / (pMinCorr + trialMinCorr)
-      self.lambda_ = 1 + self.lambda_sigma*np.random.randn(self.popsize)
+      self.lambda_ = self.lambda_exp + self.lambda_sigma*np.random.randn(self.popsize)
       self.lambda_sigma = self.lambda_range - self.lambda_range*self.Gen/(self.Tmax*1./self.popsize)
       pos = np.where(((self.lambda_ * normTrialCorr) > normTrialFit)*(fitSet < 0))
       pos = pos[0]

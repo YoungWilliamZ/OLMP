@@ -7,6 +7,31 @@ import ncs
 from easydict import EasyDict as edict
 import time
 import pdb
+import argparse
+import json
+
+import datetime
+now = datetime.datetime.now()
+time_styled = now.strftime("%Y-%m-%d %H:%M:%S")
+original = sys.stdout
+sys.stdout = open('output_{}.txt'.format(time_styled), 'w')
+
+
+# Get the parameter path
+parser = argparse.ArgumentParser(description="This is a NCS solver")
+parser.add_argument("-c", "--config", default="algorithm_ncs/parameter.json", type=str, help="a json file that contains parameter")
+parser.add_argument("-d", "--data", default="6", type=int, help="the problem dataset that need to be solved")
+args = parser.parse_args()
+
+config_file = args.config
+         
+with open(config_file) as file:
+   try:
+      ncs_para = json.loads(file.read())
+   except:
+      raise Exception("not a json format file")
+
+
 
 # model files
 proto='./models/lenet300100/lenet_train_test.prototxt'
@@ -146,9 +171,23 @@ for itr in range(niter):
          es = {}
          if es_method == 'ncs':
            __C = edict()
-           __C.parameters = {'reset_xl_to_pop':False,'init_value':tmp_crates, 'stepsize':ncs_stepsize, 'bounds':[0.0, 10.], 'ftarget':0, 'tmax':1600, 'popsize':10, 'best_k':1}
+
+         #   _lambda = ncs_para["lambda"]
+         #   r = ncs_para["r"]
+         #   epoch = ncs_para["epoch"]
+           __C.parameters = {'reset_xl_to_pop':False, 
+                             'init_value':tmp_crates, 
+                             'stepsize':ncs_stepsize, 
+                             'bounds':[0.0, 10.], 
+                             'ftarget':0, 
+                             'tmax':1600, 
+                             'popsize':ncs_para["n"], 
+                             'best_k':1, 
+                             'epoch': ncs_para["epoch"], 
+                             'lambda_': ncs_para["lambda"],
+                             'r': ncs_para["r"]}
            es = ncs.NCS(__C.parameters)
-           print '***************NCS initialization***************'
+         #   print '***************NCS initialization***************'
            tmp_x_ = np.array(crates_list)
            tmp_input_x = tmp_crates
            for _ii in range(len(tmp_ind)):
@@ -156,8 +195,10 @@ for itr in range(niter):
            _,tmp_fit = evaluate(solver.net, [tmp_x_], 1, accuracy_)
            es.set_initFitness(es.popsize*tmp_fit)
            print 'fit:{}'.format(tmp_fit)
-           print '***************NCS initialization***************'
-         while not es.stop():
+         #   print '***************NCS initialization***************'
+         
+         # while not es.stop():
+         if not es.stop():
            x = es.ask()
            X = []
            for x_ in x:
@@ -179,6 +220,7 @@ for itr in range(niter):
            #es.disp(100)
            for _ii in range(len(tmp_ind)):
              crates_list[layer_inds[tmp_ind[_ii]]] = es.result()[0][_ii]
+         
          for c_i in range(len(crates_list)):
             crates[layer_name[c_i]] = crates_list[c_i]
          es_cache[itr]={'compression':-es.result()[1], 'crates':crates_list[:]}
@@ -190,12 +232,16 @@ for itr in range(niter):
 
 end_time = time.time()
 # record 
-import datetime
-now = datetime.datetime.now()
-time_styled = now.strftime("%Y-%m-%d %H:%M:%S")
+
+
 out_ = open('record_{}.txt'.format(time_styled), 'w')
 for key,value in es_cache.items():
    out_.write("Iteration[{}]:\t{}x\t{}\n".format(key,value['compression'],value['crates']))
 out_.close()
 print 'random seed:{}'.format(seed)
 print "Time:%.4f" % ((end_time - start_time)/60.)
+
+print 'fit:{}'.format(tmp_fit)
+
+sys.stdout = original
+print tmp_fit[0]
