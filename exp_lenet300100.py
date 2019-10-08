@@ -13,8 +13,6 @@ import json
 import datetime
 now = datetime.datetime.now()
 time_styled = now.strftime("%Y-%m-%d %H:%M:%S")
-original = sys.stdout
-sys.stdout = open('output_{}.txt'.format(time_styled), 'w')
 
 
 # Get the parameter path
@@ -232,16 +230,12 @@ for itr in range(niter):
 
 end_time = time.time()
 # record 
-
-
-out_ = open('record_{}.txt'.format(time_styled), 'w')
-for key,value in es_cache.items():
-   out_.write("Iteration[{}]:\t{}x\t{}\n".format(key,value['compression'],value['crates']))
-out_.close()
+# out_ = open('record_{}.txt'.format(time_styled), 'w')
+# for key,value in es_cache.items():
+#    out_.write("Iteration[{}]:\t{}x\t{}\n".format(key,value['compression'],value['crates']))
+# out_.close()
 print 'random seed:{}'.format(seed)
 print "Time:%.4f" % ((end_time - start_time)/60.)
 
 print 'fit:{}'.format(tmp_fit)
-
-sys.stdout = original
 print tmp_fit[0]
