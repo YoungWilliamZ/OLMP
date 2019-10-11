@@ -238,4 +238,4 @@ print 'random seed:{}'.format(seed)
 print "Time:%.4f" % ((end_time - start_time)/60.)
 
 print 'fit:{}'.format(tmp_fit)
-print tmp_fit[0]
+print 1-tmp_fit[0]
