@@ -32,7 +32,7 @@ class NCS:
       #self.pop[0,:] = parameters.init_value
       #the same init values
       #self.pop = np.ones([parameters.popsize, self.n])*0.1
-      if parameters.has_key('init_pop'):
+      if 'init_pop' in parameters:
         self.pop = np.tile(parameters.init_pop, (parameters.popsize,1))[:parameters.popsize,:]
       else:
         self.pop = np.tile(self.init_value, (parameters.popsize,1))
@@ -75,12 +75,12 @@ class NCS:
 
    def disp(self, count):
       if self.Gen % count == 0:
-        print "%-----------------Best so far-----------------------%"
-        print "[{}]best fitness: {}".format(self.Gen/count, self.min_f)
-        print "k best records"
+        print("%-----------------Best so far-----------------------%")
+        print("[{}]best fitness: {}".format(self.Gen/count, self.min_f))
+        print("k best records")
         for i in range(self.best_k):
-          print "fitness of record[{}]:{}".format(i, self.k_min_f[i])
-        print "%---------------------------------------------------%"
+          print("fitness of record[{}]:{}".format(i, self.k_min_f[i]))
+        print("%---------------------------------------------------%")
         return False
       else:
         return False
