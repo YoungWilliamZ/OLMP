@@ -33,6 +33,7 @@ rm -rf /var/lib/apt/lists/*
 ENV CAFFE_ROOT=/opt/caffe
 WORKDIR $CAFFE_ROOT
 
+Add data /home/data
 Add . .
 RUN cd python && pip3 install -r requirements.txt
 RUN apt update
@@ -44,5 +45,3 @@ ENV PYCAFFE_ROOT $CAFFE_ROOT/python
 ENV PYTHONPATH $PYCAFFE_ROOT:$PYTHONPATH
 ENV PATH $CAFFE_ROOT/build/tools:$PYCAFFE_ROOT:$PATH
 RUN echo "$CAFFE_ROOT/build/lib" >> /etc/ld.so.conf.d/caffe.conf && ldconfig
-
-WORKDIR /workspace
