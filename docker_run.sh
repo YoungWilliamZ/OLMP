@@ -1,1 +1,1 @@
-sudo docker run -it -v `pwd`:/workspace -v `pwd`/data:/home/data/ --gpus all  youngwilliam/olmp:gpu_python3.6 python3 exp_lenet300100_3.py -d 29 -c parameter.json
+sudo docker run -it -v `pwd`:/workspace -v `pwd`/data:/home/data/ --gpus all  youngwilliam/olmp:gpu_python3.6 python3 exp_lenet300100_3.py -d 29 -c $1
