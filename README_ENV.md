@@ -211,6 +211,12 @@ export PATH=$CAFFE_ROOT/build/tools:$PYCAFFE_ROOT:$PATH
 echo "$CAFFE_ROOT/build/lib" >> /etc/ld.so.conf.d/caffe.conf && ldconfig
 ```
 
+### Prepare the data
+
+```
+sudo mv data /home/data
+```
+
 ### Run
 
 
