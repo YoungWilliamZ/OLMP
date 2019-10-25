@@ -1,0 +1,1 @@
+sudo docker build . -t youngwilliam/olmp:cpu_python3.6

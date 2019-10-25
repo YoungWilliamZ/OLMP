@@ -1,0 +1,1 @@
+sudo docker run -it youngwilliam/olmp:cpu_python3.6 python3 exp_lenet300100_3_CPU.py -d 29 -c parameter.json
