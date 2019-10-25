@@ -33,7 +33,7 @@ Follow the instruction: https://docs.nvidia.com/cuda/cuda-installation-guide-lin
 
 Or Goolge a suitable way for your Nvidia-GPU.
 
-#### Install Nvidia-docker
+#### Install Nvidia-docker for Nvidia GPU user
 
 ```
 distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
