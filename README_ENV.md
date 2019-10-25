@@ -7,6 +7,7 @@
 - OS: Ubuntu 18.04.3 LTS (Bionic Beaver)
 - CPU: Intel(R) Xeon(R) CPU E5-2690 v4 @ 2.60GHz
 - GPU: TITAN V
+- Python 3.6.8
 
 # Dependence For GPU user
 
